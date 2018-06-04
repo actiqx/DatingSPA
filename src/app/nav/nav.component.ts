@@ -31,7 +31,6 @@ export class NavComponent implements OnInit {
     this.alertify.success('loggedout successfully');
   }
   loggedIn() {
-    const token = localStorage.getItem('token');
-    return !!token;
+    return this.authservice.loggedIn();
   }
 }
