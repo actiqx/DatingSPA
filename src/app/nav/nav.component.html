@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <a class="navbar-brand" href="#">Dating App</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false"
     aria-label="Toggle navigation">
@@ -6,7 +6,7 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbar">
-    <ul class="navbar-nav mr-auto">
+    <ul *ngIf="loggedIn()" class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link" href="#">Matches
           <span class="sr-only">(current)</span>
@@ -20,7 +20,7 @@
         <a class="nav-link" href="#">Messages</a>
       </li>
     </ul>
-    <form *ngIf="!loggedIn()" class="form-inline navbar-form navbar-right" #loginForm="ngForm" (ngSubmit)="doLogin()">
+    <form *ngIf="!loggedIn()" class="form-inline ml-auto" #loginForm="ngForm" (ngSubmit)="doLogin()">
 
       <input type="text" placeholder="Username" required name="username" class="form-control mr-sm-2" [(ngModel)]="model.username">
       <input type="password" placeholder="Password" required name="password" class="form-control mr-sm-2" [(ngModel)]="model.password">
@@ -29,20 +29,18 @@
       <button type="submit" class="btn btn-success" [disabled]="!loginForm.valid">Sign in</button>
     </form>
     <ul *ngIf="loggedIn()" class="navbar-nav  pull-right">
-      <li class="nav-item">
-        <a class="nav-link" href="#" (click)="logout()">Logout</a>
-      </li>
-      <li class="nav-item dropdown  ">
 
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-          aria-expanded="false">
-          Welcome User
+      <li class="nav-item dropdown  " dropdown>
+
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" dropdownToggle>
+          Welcome {{authservice.decodedToken?.unique_name | titlecase}}
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <div class="dropdown-menu" *dropdownMenu>
           <a class="dropdown-item" href="#">
-            <i class="fa fa-user"></i>Edit Profile</a>
+            <i class="fa fa-user mr-sm-2"></i>Edit Profile</a>
+          <li class="divider dropdown-divider"></li>
           <a class="dropdown-item" href="#" (click)="logout()">
-            <i class="fa fa-user"></i>Logout</a>
+            <i class="fa fa-sign-out mr-sm-2"></i>Logout</a>
 
         </div>
       </li>
