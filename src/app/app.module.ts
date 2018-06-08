@@ -11,13 +11,15 @@ import { RegisterComponent } from './register/register.component';
 import { AlertifyService } from './_services/alertify.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { BsDropdownModule } from 'ngx-bootstrap';
-import { MemberListComponent } from './member-list/member-list.component';
+
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
 import { AuthGuard } from './_guards/auth.guard';
-
+import { UserService } from './_services/user.service';
+import { MemberListComponent } from './members/member-list/member-list.component';
+import { MemberCardComponent } from './members/member-card/member-card.component';
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -29,7 +31,8 @@ export function tokenGetter() {
     RegisterComponent,
     MemberListComponent,
     ListsComponent,
-    MessagesComponent
+    MessagesComponent,
+    MemberCardComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,7 @@ export function tokenGetter() {
     BsDropdownModule.forRoot(),
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [AuthService, AlertifyService, AuthGuard],
+  providers: [AuthService, AlertifyService, AuthGuard, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
