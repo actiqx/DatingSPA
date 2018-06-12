@@ -11,7 +11,7 @@ import { RegisterComponent } from './register/register.component';
 import { AlertifyService } from './_services/alertify.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { BsDropdownModule } from 'ngx-bootstrap';
-
+import { TabsModule } from 'ngx-bootstrap/tabs/tabs.module';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { RouterModule } from '@angular/router';
@@ -20,6 +20,12 @@ import { AuthGuard } from './_guards/auth.guard';
 import { UserService } from './_services/user.service';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './_helper/jwt.interceptor';
+import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { NgxGalleryModule } from 'ngx-gallery';
+import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
+import { MemberListResolver } from './_resolvers/member-list.resolver';
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -32,23 +38,41 @@ export function tokenGetter() {
     MemberListComponent,
     ListsComponent,
     MessagesComponent,
-    MemberCardComponent
+    MemberCardComponent,
+    MemberDetailComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
     FormsModule,
+    HttpClientModule,
     JwtModule.forRoot({
       config: {
+        throwNoTokenError: true,
         tokenGetter: tokenGetter,
+
         whitelistedDomains: ['localhost:4200'],
-        blacklistedRoutes: ['localhost:5001/auth/']
+        blacklistedRoutes: ['localhost:4200/auth/']
       }
     }),
     BsDropdownModule.forRoot(),
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    TabsModule.forRoot(),
+    NgxGalleryModule
   ],
-  providers: [AuthService, AlertifyService, AuthGuard, UserService],
+  providers: [
+    AuthService,
+    AlertifyService,
+    AuthGuard,
+    UserService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    },
+    MemberDetailResolver,
+    MemberListResolver
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

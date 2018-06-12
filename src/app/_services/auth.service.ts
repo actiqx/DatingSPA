@@ -36,8 +36,6 @@ export class AuthService {
       .pipe(catchError(this.handleError));
   }
   loggedIn() {
-    console.log('service :-' + this.jwtHelper.isTokenExpired());
-
     return !this.jwtHelper.isTokenExpired();
   }
 

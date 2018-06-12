@@ -20,10 +20,17 @@ export class UserService {
     );
   }
 
+  getUser(id): Observable<User> {
+    return this.http.get(this.baseUrl + 'users/' + id, this.jwt()).pipe(
+      map(respo => <User>respo.json()),
+      catchError(this.handleError)
+    );
+  }
+
   private jwt() {
     const token = localStorage.getItem('token');
     if (token) {
-      const headers = new Headers({ 'Authorization': 'Bearer ' + token });
+      const headers = new Headers({ Authorization: 'Bearer ' + token });
       headers.append('Content-type', 'application/json');
       return new RequestOptions({ headers: headers });
     }
