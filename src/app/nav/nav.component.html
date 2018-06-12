@@ -36,7 +36,7 @@
           Welcome {{authservice.decodedToken?.unique_name | titlecase}}
         </a>
         <div class="dropdown-menu" *dropdownMenu>
-          <a class="dropdown-item" href="#">
+          <a class="dropdown-item" [routerLink]="['/member/edit']">
             <i class="fa fa-user mr-sm-2"></i>Edit Profile</a>
           <li class="divider dropdown-divider"></li>
           <a class="dropdown-item" a-ng (click)="logout()">
